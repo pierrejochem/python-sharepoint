@@ -20,20 +20,14 @@ class SharePointAttachments(object):
             yield SharePointAttachment(self, url.text)
 
     def delete(self, url):
-        xml = SP.DeleteAttachment(SP.listName(self.list_id), SP.listItemID(str(self.row_id)), url)
-        try:
-            response = self.opener.post_soap(LIST_WEBSERVICE, xml,
-                                         soapaction='http://schemas.microsoft.com/sharepoint/soap/DeleteAttachment')        
-        except urllib2.URLError, e:
-            print 'ERROR: ', e
+        xml = SP.DeleteAttachment(SP.listName(self.list_id), SP.listItemID(str(self.row_id)), SP.url(url))
+        response = self.opener.post_soap(LIST_WEBSERVICE, xml, 
+                                         soapaction='http://schemas.microsoft.com/sharepoint/soap/DeleteAttachment')
 
     def add(self, filename, content):
-        xml = SP.AddAttachment(SP.listName(self.list_id), SP.listItemID(str(self.row_id)), filename, content)
-        try:
-            response = self.opener.post_soap(LIST_WEBSERVICE, xml,
-                                         soapaction='http://schemas.microsoft.com/sharepoint/soap/AddAttachment')        
-        except urllib2.URLError, e:
-            print 'ERROR: ', e
+        xml = SP.AddAttachment(SP.listName(self.list_id), SP.listItemID(str(self.row_id)), SP.fileName(filename), SP.attachment(content))
+        response = self.opener.post_soap(LIST_WEBSERVICE, xml,
+                                         soapaction='http://schemas.microsoft.com/sharepoint/soap/AddAttachment')
 
     def open(self, url):
         return self.opener.open(url)
