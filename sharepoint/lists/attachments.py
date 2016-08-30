@@ -22,7 +22,7 @@ class SharePointAttachments(object):
     def delete(self, url):
         xml = SP.DeleteAttachment(SP.listName(self.list_id), SP.listItemID(str(self.row_id)), url)
         try:
-        response = self.opener.post_soap(LIST_WEBSERVICE, xml,
+            response = self.opener.post_soap(LIST_WEBSERVICE, xml,
                                          soapaction='http://schemas.microsoft.com/sharepoint/soap/DeleteAttachment')        
         except urllib2.URLError, e:
             print 'ERROR: ', e
